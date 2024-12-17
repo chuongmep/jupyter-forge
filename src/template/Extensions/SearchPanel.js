@@ -17,11 +17,13 @@ function SearchPanel(viewer, container, id, title, options) {
     this.container.style.resize = "auto";
     // this is where we should place the content of our panel
     var div = document.createElement('div');
-    // set style to docking panel, search field and button on top
+    // set style to docking panel allway in bottom right of the screen
     div.style.margin = '10px';
-    div.style.marginBottom = '20px';
-    // div.style.margin = '100px';
-    // div.innerText = "My content here";
+    div.style.marginBottom = '10px';
+    div.style.width = 'auto';
+    div.style.height = 'auto';
+
+
 
     // add a checkbox for option search by element id
     var checkbox = document.createElement('input');
@@ -114,6 +116,7 @@ function searchItems(viewer) {
             // zoom to that object and isolate
             getProperty(viewer.model, dbId);
             zoomAndIsoObject(viewer, dbId);
+            selectObject(viewer, dbId);
             return;
         }
     }
@@ -153,6 +156,11 @@ function mappingAndIsolate(mapping, viewer) {
 function zoomAndIsoObject(viewer, dbId) {
     console.log('Zoom Iso Object: ', dbId);
     viewer.isolate(dbId);
+    viewer.fitToView(dbId);
+}
+function selectObject(viewer, dbId) {
+    console.log('Select Object: ', dbId);
+    viewer.select(dbId);
     viewer.fitToView(dbId);
 }
 

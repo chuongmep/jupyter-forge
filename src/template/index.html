@@ -43,6 +43,12 @@
             font-size: 12px;
             cursor: pointer;
         }
+        .search-button {
+            background-image: url(img/search.png);
+            background-size: 36px;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
     </style>
 
     <script lang="JavaScript" src="Extensions/ToolbarExtension.js"></script>
@@ -80,7 +86,7 @@
                 viewer.loadExtension('ToolbarExtension').then(function () {
                     console.log('ToolbarExtension loaded');
                 });
-                
+
                 console.log('Initialization complete, loading a model next...');
                 Autodesk.Viewing.Document.load(documentURN, onDocumentLoadSuccess, onDocumentLoadFailure);
             });
