@@ -5,7 +5,6 @@ from subprocess import Popen, PIPE
 import os
 from IPython.display import display
 from IPython.display import IFrame
-import threading
 import time
 
 class JupyterForge:
@@ -85,13 +84,13 @@ class JupyterForge:
         iframe = IFrame(src=f"http://localhost:{self.port}/{self.file_output_name}", width=width, height=height)
         display(iframe)
         
-# if __name__ == "__main__":
-#     from aps_toolkit import Token
-#     from aps_toolkit import Auth
-#     from jupyter_forge import JupyterForge
-#     token = Auth().auth2leg()
-#     urn = "dXJuOmFkc2sud2lwcHJvZDpmcy5maWxlOnZmLlFsa1ZtVU5RUmYtanMtd3dLQ2dLM1E_dmVyc2lvbj0x"
-#     token = Auth().auth2leg()
-#     forge_viewer = JupyterForge(urn,token,debug_mode=True,port=54364)
-#     forge_viewer.show()
+if __name__ == "__main__":
+    from aps_toolkit import Token
+    from aps_toolkit import Auth
+    from jupyter_forge import  JupyterForge
+    token = Auth().auth2leg()
+    urn = "dXJuOmFkc2sud2lwcHJvZDpmcy5maWxlOnZmLlFsa1ZtVU5RUmYtanMtd3dLQ2dLM1E_dmVyc2lvbj0x"
+    token = Auth().auth2leg()
+    forge_viewer = JupyterForge(urn,token,debug_mode=True,port=54364)
+    forge_viewer.show()
     
