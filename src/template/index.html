@@ -19,30 +19,30 @@
             background-color: #F0F8FF;
         }
 
-        /* Style for the control panel */
-        #controls {
-            position: fixed;
-            top: 10px;
-            left: 10px;
-            z-index: 5;
-            background-color: white;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
-        }
+        /*!* Style for the control panel *!*/
+        /*#controls {*/
+        /*    position: fixed;*/
+        /*    top: 10px;*/
+        /*    left: 10px;*/
+        /*    z-index: 5;*/
+        /*    background-color: white;*/
+        /*    padding: 10px;*/
+        /*    border-radius: 5px;*/
+        /*    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);*/
+        /*}*/
 
-        #controls input {
-            margin: 5px 0;
-            padding: 5px;
-            width: 150px;
-        }
+        /*#controls input {*/
+        /*    margin: 5px 0;*/
+        /*    padding: 5px;*/
+        /*    width: 150px;*/
+        /*}*/
 
-        #controls button {
-            margin: 5px;
-            padding: 5px;
-            font-size: 12px;
-            cursor: pointer;
-        }
+        /*#controls button {*/
+        /*    margin: 5px;*/
+        /*    padding: 5px;*/
+        /*    font-size: 12px;*/
+        /*    cursor: pointer;*/
+        /*}*/
         .search-button {
             background-image: url(img/search.png);
             background-size: 36px;
@@ -144,64 +144,6 @@
             console.error('Failed fetching manifest');
         }
 
-        // Helper function to get object from input or selection
-        function getSelectedOrInputObject() {
-            if (viewer.getSelection().length > 0) {
-                return viewer.getSelection(); // Return selected objects
-            }
-            const inputId = document.getElementById('objectId').value;
-            // if contains, parse to list of object IDs
-            if (inputId.includes(',')) {
-                return inputId.split(',').map(id => parseInt(id));
-            }
-            if (inputId) {
-                const parsedId = parseInt(inputId);
-                if (!isNaN(parsedId)) {
-                    return [parsedId]; // Return array of object ID
-                }
-                console.error('Invalid Object ID input.');
-            }
-            return; // Fallback to current selection
-        }
-
-        // Zoom In function
-        function zoomIn() {
-            const objects = getSelectedOrInputObject();
-            if (objects && objects.length > 0) {
-                viewer.fitToView(objects);
-                // select objects
-                viewer.select(objects);
-                console.log(`Zoomed to objects: ${objects}`);
-            } else {
-                console.log('No object selected or input to zoom in.');
-            }
-        }
-
-        // Zoom Out function
-        function zoomOut() {
-            const objects = getSelectedOrInputObject();
-            if (objects && objects.length > 0) {
-                viewer.navigation.fitBounds(true);
-                viewer.fitToView();
-                console.log(`Zoomed out for objects: ${objects}`);
-            } else {
-                viewer.fitToView();
-                console.log('Zoomed out to the full model.');
-            }
-        }
-
-        // Isolate function
-        function isolateObject() {
-            const objects = getSelectedOrInputObject();
-            if (objects && objects.length > 0) {
-                viewer.isolate(objects); // Isolate specified objects
-                viewer.fitToView(objects); // Zoom into isolated objects
-                console.log(`Isolated objects: ${objects}`);
-            } else {
-                console.log('No object selected or input to isolate.');
-            }
-        }
-
         // Initialize the viewer on page load
         window.onload = function () {
             initializeViewer();
@@ -212,12 +154,12 @@
 
 <body bgcolor="#d3d3d3">
 <!-- Control panel -->
-<div id="controls">
-    <input id="objectId" type="text" placeholder="Enter Object ID (optional)">
-    <button onclick="zoomIn()">Zoom</button>
-    <button onclick="zoomOut()">Zoom Out</button>
-    <button onclick="isolateObject()">Isolate</button>
-</div>
+<!--<div id="controls">-->
+<!--    <input id="objectId" type="text" placeholder="Enter Object ID (optional)">-->
+<!--    <button onclick="zoomIn()">Zoom</button>-->
+<!--    <button onclick="zoomOut()">Zoom Out</button>-->
+<!--    <button onclick="isolateObject()">Isolate</button>-->
+<!--</div>-->
 
 <div id="forgeViewer"></div>
 
