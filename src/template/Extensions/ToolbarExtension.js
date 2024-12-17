@@ -52,11 +52,4 @@ ToolbarExtension.prototype.unload = function() {
         this.subToolbar = null;
     }
 };
-
-// export excel status callback
-let statusCallback = function(completed, message) {
-    $.notify(message, { className: "info", position:"bottom right" });
-    $('#downloadExcel').prop("disabled", !completed);
-}
-
 Autodesk.Viewing.theExtensionManager.registerExtension('ToolbarExtension', ToolbarExtension);

@@ -15,7 +15,7 @@
 
         #forgeViewer {
             width: 100%;
-            height: 80%;
+            height: 100%;
             background-color: #F0F8FF;
         }
 
@@ -63,15 +63,19 @@
         const accessToken = "{{TOKEN}}";
         const documentURN = "urn:{{URN}}";
         const objectIds = "{{OBJECT_IDS}}";
-
+        var apiText = "streamingV2";
+        const region= "{{REGION}}";
+        if (region === 'EMEA') {
+            apiText = "streamingV2_EU";
+        }
         function initializeViewer() {
             const options = {
                 env: 'AutodeskProduction2',
-                api: 'streamingV2',
+                api: apiText,
                 getAccessToken: function (onTokenReady) {
                     const timeInSeconds = 3600;
                     onTokenReady(accessToken, timeInSeconds);
-                }
+                },
             };
 
             Autodesk.Viewing.Initializer(options, function () {
@@ -83,6 +87,7 @@
                     console.error('Failed to create a Viewer: WebGL not supported.');
                     return;
                 }
+                // load extension and enable search panel
                 viewer.loadExtension('ToolbarExtension').then(function () {
                     console.log('ToolbarExtension loaded');
                 });

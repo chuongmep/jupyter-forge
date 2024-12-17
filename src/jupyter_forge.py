@@ -10,10 +10,11 @@ import sys
 
 
 class JupyterForge:
-    def __init__(self, urn, token: Token, port=62345, debug_mode=False):
+    def __init__(self, urn, token: Token,region:str="US", port=62345, debug_mode=False):
         self.debug_mode = debug_mode
         self.token = token
         self.urn = urn
+        self.region = region
         if urn is None:
             raise Exception("URN is required")
         if token is None:
@@ -116,6 +117,7 @@ class JupyterForge:
         with open(file_path, "r") as file:
             html_template = file.read()
         html_content = html_template.replace("{{TOKEN}}", access_token).replace("{{URN}}", self.urn)
+        html_content = html_content.replace("{{REGION}}", self.region)
         if object_ids:
             objects_ids_str = ",".join(map(str, object_ids))
             html_content = html_content.replace("{{OBJECT_IDS}}", objects_ids_str)

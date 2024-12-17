@@ -183,15 +183,11 @@ function zoomIn() {
 
 // Zoom Out function
 function zoomOut() {
-    const objects = getSelectedOrInputObject(this.viewer);
-    if (objects && objects.length > 0) {
-        this.viewer.navigation.fitBounds(true);
-        this.viewer.fitToView();
-        console.log(`Zoomed out for objects: ${objects}`);
-    } else {
-        this.viewer.fitToView();
-        console.log('Zoomed out to the full model.');
-    }
+    // reset isolate
+    console.log("Reset And Zoom Out");
+    this.viewer.isolate([]);
+    this.viewer.navigation.fitBounds(true);
+    this.viewer.fitToView();
 }
 
 // Isolate function
