@@ -1,15 +1,15 @@
-from aps_toolkit import Auth
+from aps_toolkit import Token
 import random
 import socket
 from subprocess import Popen, PIPE
 import os
 from IPython.display import display
 from IPython.display import IFrame
-import requests
 import threading
+import time
 
 class JupyterForge:
-    def __init__(self, urn,token, port=62345, debug_mode=False):
+    def __init__(self, urn,token:Token, port=62345, debug_mode=False):
         self.debug_mode = debug_mode
         self.token = token
         self.urn = urn
@@ -51,16 +51,17 @@ class JupyterForge:
                     all_ids = os.popen(f"netstat -ano | findstr :{self.port}").read()
                     pid = int(all_ids.split()[-1])
                     os.system(f"taskkill /PID {pid} /F")
+                    time.sleep(2)
                 else:
                     os.system(f"kill -9 $(lsof -t -i:{self.port})")
+                    time.sleep(2)
             else:
                 if self.debug_mode:
                     print(f"Port {self.port} is not in use, start init server dir: {dir}")
-            # sleep 2s
-            threading.Event().wait(2)
             # start a server
-            Popen(["python", "-m", "http.server", str(self.port)], cwd=dir, stdout=PIPE, stderr=PIPE)
-
+            process = Popen(["python", "-m", "http.server", str(self.port)], cwd=dir, stdout=PIPE, stderr=PIPE)
+            if self.debug_mode:
+                print(f"Server PID: {process.pid}")
             if self.debug_mode:
                 print(f"Server started successfully. Access: http://localhost:{self.port}")
         except Exception as e:
@@ -80,6 +81,17 @@ class JupyterForge:
         with open(output_file, "w") as file:
             file.write(html_content)
         if self.debug_mode:
-            print(f"Viewer Access: http://localhost:{self.port}/{self.file_output_name}")
+            print(fr"http://localhost:{self.port}/{self.file_output_name}")
         iframe = IFrame(src=f"http://localhost:{self.port}/{self.file_output_name}", width=width, height=height)
         display(iframe)
+        
+# if __name__ == "__main__":
+#     from aps_toolkit import Token
+#     from aps_toolkit import Auth
+#     from jupyter_forge import JupyterForge
+#     token = Auth().auth2leg()
+#     urn = "dXJuOmFkc2sud2lwcHJvZDpmcy5maWxlOnZmLlFsa1ZtVU5RUmYtanMtd3dLQ2dLM1E_dmVyc2lvbj0x"
+#     token = Auth().auth2leg()
+#     forge_viewer = JupyterForge(urn,token,debug_mode=True,port=54364)
+#     forge_viewer.show()
+    
