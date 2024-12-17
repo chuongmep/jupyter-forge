@@ -82,16 +82,24 @@ class JupyterForge:
                 if self.debug_mode:
                     print(f"Port {self.port} is not in use, start init server dir: {dir}")
             # start a server and bind
-            FNULL = open(os.devnull, 'w')
-            creation_flags = subprocess.CREATE_NEW_PROCESS_GROUP
-            process = subprocess.Popen(
-                [sys.executable, "-m", "http.server", str(self.port), "--directory", self.dir],
-                stdout=FNULL,
-                stderr=FNULL,
-                creationflags=creation_flags,
-                shell=False
-            )
-
+            FNULL = open(os.devnull, 'w', encoding='utf-8')
+            if os.name == 'nt':
+                creation_flags = subprocess.CREATE_NEW_PROCESS_GROUP
+                process = subprocess.Popen(
+                    [sys.executable, "-m", "http.server", str(self.port), "--directory", self.dir],
+                    stdout=FNULL,
+                    stderr=FNULL,
+                    creationflags=creation_flags,
+                    shell=False
+                )
+            else:
+                process = subprocess.Popen(
+                    [sys.executable, "-m", "http.server", str(self.port), "--directory", self.dir],
+                    stdout=FNULL,
+                    stderr=FNULL,
+                    shell=False
+                )
+                
             if self.debug_mode:
                 print(f"Server PID: {process.pid}")
             if self.debug_mode:
