@@ -63,6 +63,8 @@ class JupyterForge:
                 print(f"Server PID: {process.pid}")
             if self.debug_mode:
                 print(f"Server started successfully. Access: http://localhost:{self.port}")
+            # wait 2 seconds for server to start
+            time.sleep(2)
         except Exception as e:
             print(f"Error starting server: {e}")
 
