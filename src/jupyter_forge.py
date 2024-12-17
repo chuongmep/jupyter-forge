@@ -113,7 +113,6 @@ class JupyterForge:
         access_token = self.token.access_token
         current_dir = os.path.dirname(os.path.realpath(__file__))
         file_path = os.path.join(current_dir, "template", "index.html")
-        print("file_path", file_path)
         with open(file_path, "r") as file:
             html_template = file.read()
         html_content = html_template.replace("{{TOKEN}}", access_token).replace("{{URN}}", self.urn)
