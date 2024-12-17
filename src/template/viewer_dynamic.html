@@ -75,7 +75,7 @@
                     console.error('Failed to create a Viewer: WebGL not supported.');
                     return;
                 }
-                 viewer.loadExtension('ToolbarExtension').then(function () {
+                viewer.loadExtension('ToolbarExtension').then(function () {
                     console.log('ToolbarExtension loaded');
                 });
                 console.log('Initialization complete, loading a model next...');
@@ -101,6 +101,10 @@
             }
             viewer.addEventListener(Autodesk.Viewing.GEOMETRY_LOADED_EVENT, function () {
                 initLoadbleObjectIds(viewer, objectIds);
+            });
+            viewer.unloadExtension('ToolbarExtension');
+            viewer.loadExtension('ToolbarExtension').then(function () {
+                console.log('ToolbarExtension loaded');
             });
 
         }

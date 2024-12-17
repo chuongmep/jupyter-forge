@@ -9,10 +9,14 @@ import requests
 import threading
 
 class JupyterForge:
-    def __init__(self, urn, port=62345, debug_mode=False):
+    def __init__(self, urn,token, port=62345, debug_mode=False):
         self.debug_mode = debug_mode
-        self.token = Auth().auth2leg()
+        self.token = token
         self.urn = urn
+        if urn is None:
+            raise Exception("URN is required")
+        if token is None:
+            raise Exception("Token is required")
         self.port = port
         self.dir = self.get_current_dir()
         self.file_output_name = "viewer_dynamic_rendered.html"
@@ -58,7 +62,7 @@ class JupyterForge:
             Popen(["python", "-m", "http.server", str(self.port)], cwd=dir, stdout=PIPE, stderr=PIPE)
 
             if self.debug_mode:
-                print(f"Server started successfully. Access: http://localhost:{self.port}/{self.file_output_name}")
+                print(f"Server started successfully. Access: http://localhost:{self.port}")
         except Exception as e:
             print(f"Error starting server: {e}")
 
@@ -76,6 +80,6 @@ class JupyterForge:
         with open(output_file, "w") as file:
             file.write(html_content)
         if self.debug_mode:
-            print(f"Viewer URL: http://localhost:{self.port}/{self.file_output_name}")
+            print(f"Viewer Access: http://localhost:{self.port}/{self.file_output_name}")
         iframe = IFrame(src=f"http://localhost:{self.port}/{self.file_output_name}", width=width, height=height)
         display(iframe)

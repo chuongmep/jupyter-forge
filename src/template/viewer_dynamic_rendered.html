@@ -51,7 +51,7 @@
         var md_viewables;
 
         // Replace with actual access token and URN passed dynamically
-        const accessToken = "eyJhbGciOiJSUzI1NiIsImtpZCI6IlhrUFpfSmhoXzlTYzNZS01oRERBZFBWeFowOF9SUzI1NiIsInBpLmF0bSI6ImFzc2MifQ.eyJzY29wZSI6WyJkYXRhOnJlYWQiLCJkYXRhOndyaXRlIiwiZGF0YTpzZWFyY2giLCJkYXRhOmNyZWF0ZSIsImJ1Y2tldDpyZWFkIiwiYnVja2V0OmNyZWF0ZSIsInVzZXI6cmVhZCIsImJ1Y2tldDp1cGRhdGUiLCJidWNrZXQ6ZGVsZXRlIiwiY29kZTphbGwiLCJhY2NvdW50OndyaXRlIiwiYWNjb3VudDpyZWFkIl0sImNsaWVudF9pZCI6IlBVT2tUVXVMa0lHdGxZZUZOYk5HOVcwUFJkbVVqR0trIiwiaXNzIjoiaHR0cHM6Ly9kZXZlbG9wZXIuYXBpLmF1dG9kZXNrLmNvbSIsImF1ZCI6Imh0dHBzOi8vYXV0b2Rlc2suY29tIiwianRpIjoiTHp6ZE1HRTcyTHBTdVhaeHFOOVVtc0liOTRweG1Qb1Jnd2xyNWpUVEpxTlQ3U1VhdWprUmhLTTZpU1Q3aGF4eCIsImV4cCI6MTczNDQwNzgzN30.Kh8hzNKiUOQ7S0KhXZsgXe_Xt_c3tRAAfBdtkUvwmMmZaJkAI-jy8iHMJV_CcSXNQ-VM9LDCawc2rIhAXGNFL_jepvDCn2SpgvFA0vDa3_xRgu-Az25xs33TMjYDo6Bop-o2b3MMptRguxuW1nLCTXOBLO0ovKx2nWqNPw7jzXxxdYGAVXyiSDzsUldfHB77OY6U4N63lCnp2NNf0bNF8dxV5DeuXSDqMQ4uyI5pSEYCX452x4vAxelJxoYWTIzPXoU4hS54kYj8deGIVVvYI9kAi-H6z8f8UaeEFaj9J8RPtiq_3Gh4mlhmZ0NbaEtUfGl0C0_-oJBvM7cERcWxZA";
+        const accessToken = "eyJhbGciOiJSUzI1NiIsImtpZCI6IlhrUFpfSmhoXzlTYzNZS01oRERBZFBWeFowOF9SUzI1NiIsInBpLmF0bSI6ImFzc2MifQ.eyJzY29wZSI6WyJkYXRhOnJlYWQiLCJkYXRhOndyaXRlIiwiZGF0YTpzZWFyY2giLCJkYXRhOmNyZWF0ZSIsImJ1Y2tldDpyZWFkIiwiYnVja2V0OmNyZWF0ZSIsInVzZXI6cmVhZCIsImJ1Y2tldDp1cGRhdGUiLCJidWNrZXQ6ZGVsZXRlIiwiY29kZTphbGwiLCJhY2NvdW50OndyaXRlIiwiYWNjb3VudDpyZWFkIl0sImNsaWVudF9pZCI6IlBVT2tUVXVMa0lHdGxZZUZOYk5HOVcwUFJkbVVqR0trIiwiaXNzIjoiaHR0cHM6Ly9kZXZlbG9wZXIuYXBpLmF1dG9kZXNrLmNvbSIsImF1ZCI6Imh0dHBzOi8vYXV0b2Rlc2suY29tIiwianRpIjoiVm5pNzl0NHR5S2tCRXBJNldaNzZFRVBTVGRXSVhCc05XeXBFSlRkbWc4QmtXbFVCazByUDJxRXBsQVZnRUlveSIsImV4cCI6MTczNDQxNDQwNX0.aDuj7h2wBT4x77hO3K06R56BbCoD7OOLvM-V-TwxxkxJ8fYzf4osGFvMZ0rpfU2yUsTFG79ehIrX5bJjA73FOAGwvQK5YWB3eOdCLhR0_WqAn5bRxoHuMEUvzMOXKfzVcHXOpNbAwEzqO4Ie4BHSjE60_AmONiU6YrnT1_RzdBi9DnulZ_e2ahGQcQLSGSSwDHi3CCAUEQjePlgtkmrCdi79cmH-3WStH9RA0gLJLYJ6MK_in50870vKmzAxBsuTY7B6M1HV92CTvfwRDx1gYNg97toNwUJ4yyfyGVf0ZI6lrisWklYE79_q86Ulc7CB9QvEy7AItSkQfrv9IoKGOQ";
         const documentURN = "urn:dXJuOmFkc2sud2lwcHJvZDpmcy5maWxlOnZmLkt6R2R1dDZzUklHZHhoNDlmeWZjQlE_dmVyc2lvbj00";
         const objectIds = "200";
 
@@ -75,7 +75,7 @@
                     console.error('Failed to create a Viewer: WebGL not supported.');
                     return;
                 }
-                 viewer.loadExtension('ToolbarExtension').then(function () {
+                viewer.loadExtension('ToolbarExtension').then(function () {
                     console.log('ToolbarExtension loaded');
                 });
                 console.log('Initialization complete, loading a model next...');
@@ -101,6 +101,10 @@
             }
             viewer.addEventListener(Autodesk.Viewing.GEOMETRY_LOADED_EVENT, function () {
                 initLoadbleObjectIds(viewer, objectIds);
+            });
+            viewer.unloadExtension('ToolbarExtension');
+            viewer.loadExtension('ToolbarExtension').then(function () {
+                console.log('ToolbarExtension loaded');
             });
 
         }
