@@ -6,7 +6,5 @@
     </content>
     <orderEntry type="jdk" jdkName="py312" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="viewer3D" level="application" />
-    <orderEntry type="library" name="style" level="application" />
   </component>
 </module>

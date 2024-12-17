@@ -45,7 +45,7 @@ class JupyterForge:
         except Exception as e:
             print(f"Error starting server: {e}")
 
-    def show_viewer(self, object_ids: list[int] = None):
+    def show(self, object_ids: list[int] = None, width:int=600, height:int=350):
         access_token = self.token.access_token
         with open("./template/viewer_dynamic.html", "r") as file:
             html_template = file.read()
@@ -58,6 +58,6 @@ class JupyterForge:
             file.write(html_content)
         if self.debug_mode:
             print(f"Viewer URL: http://localhost:{self.port}/{output_file}")
-        iframe = IFrame(src=f"http://localhost:{self.port}/{output_file}", width=600, height=400)
+        iframe = IFrame(src=f"http://localhost:{self.port}/{output_file}", width=width, height=height)
         display(iframe)
 
