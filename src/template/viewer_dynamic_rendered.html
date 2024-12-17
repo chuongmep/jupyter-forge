@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=no"/>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/style.min.css"
+          type="text/css">
+    <script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/viewer3D.min.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+        }
+
+        #forgeViewer {
+            width: 100%;
+            height: 80%;
+            background-color: #F0F8FF;
+        }
+
+        /* Style for the control panel */
+        #controls {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 5;
+            background-color: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        #controls input {
+            margin: 5px 0;
+            padding: 5px;
+            width: 150px;
+        }
+
+        #controls button {
+            margin: 5px;
+            padding: 5px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+    </style>
+
+    <script>
+        var viewer;
+        var md_ViewerDocument;
+        var md_viewables;
+
+        // Replace with actual access token and URN passed dynamically
+        const accessToken = "eyJhbGciOiJSUzI1NiIsImtpZCI6IlhrUFpfSmhoXzlTYzNZS01oRERBZFBWeFowOF9SUzI1NiIsInBpLmF0bSI6ImFzc2MifQ.eyJzY29wZSI6WyJkYXRhOnJlYWQiLCJkYXRhOndyaXRlIiwiZGF0YTpzZWFyY2giLCJkYXRhOmNyZWF0ZSIsImJ1Y2tldDpyZWFkIiwiYnVja2V0OmNyZWF0ZSIsInVzZXI6cmVhZCIsImJ1Y2tldDp1cGRhdGUiLCJidWNrZXQ6ZGVsZXRlIiwiY29kZTphbGwiLCJhY2NvdW50OndyaXRlIiwiYWNjb3VudDpyZWFkIl0sImNsaWVudF9pZCI6IlBVT2tUVXVMa0lHdGxZZUZOYk5HOVcwUFJkbVVqR0trIiwiaXNzIjoiaHR0cHM6Ly9kZXZlbG9wZXIuYXBpLmF1dG9kZXNrLmNvbSIsImF1ZCI6Imh0dHBzOi8vYXV0b2Rlc2suY29tIiwianRpIjoiTHp6ZE1HRTcyTHBTdVhaeHFOOVVtc0liOTRweG1Qb1Jnd2xyNWpUVEpxTlQ3U1VhdWprUmhLTTZpU1Q3aGF4eCIsImV4cCI6MTczNDQwNzgzN30.Kh8hzNKiUOQ7S0KhXZsgXe_Xt_c3tRAAfBdtkUvwmMmZaJkAI-jy8iHMJV_CcSXNQ-VM9LDCawc2rIhAXGNFL_jepvDCn2SpgvFA0vDa3_xRgu-Az25xs33TMjYDo6Bop-o2b3MMptRguxuW1nLCTXOBLO0ovKx2nWqNPw7jzXxxdYGAVXyiSDzsUldfHB77OY6U4N63lCnp2NNf0bNF8dxV5DeuXSDqMQ4uyI5pSEYCX452x4vAxelJxoYWTIzPXoU4hS54kYj8deGIVVvYI9kAi-H6z8f8UaeEFaj9J8RPtiq_3Gh4mlhmZ0NbaEtUfGl0C0_-oJBvM7cERcWxZA";
+        const documentURN = "urn:dXJuOmFkc2sud2lwcHJvZDpmcy5maWxlOnZmLkt6R2R1dDZzUklHZHhoNDlmeWZjQlE_dmVyc2lvbj00";
+        const objectIds = "200";
+
+        function initializeViewer() {
+            const options = {
+                env: 'AutodeskProduction2',
+                api: 'streamingV2',
+                getAccessToken: function (onTokenReady) {
+                    const timeInSeconds = 3600;
+                    onTokenReady(accessToken, timeInSeconds);
+                }
+            };
+
+            Autodesk.Viewing.Initializer(options, function () {
+                const htmlDiv = document.getElementById('forgeViewer');
+                viewer = new Autodesk.Viewing.GuiViewer3D(htmlDiv);
+                console.log('Viewer initialized, loading a model next...');
+                const startedCode = viewer.start();
+
+                if (startedCode > 0) {
+                    console.error('Failed to create a Viewer: WebGL not supported.');
+                    return;
+                }
+                 viewer.loadExtension('ToolbarExtension').then(function () {
+                    console.log('ToolbarExtension loaded');
+                });
+                console.log('Initialization complete, loading a model next...');
+                Autodesk.Viewing.Document.load(documentURN, onDocumentLoadSuccess, onDocumentLoadFailure);
+            });
+        }
+
+        function onDocumentLoadSuccess(viewerDocument) {
+            const viewerApp = viewerDocument.getRoot();
+            md_ViewerDocument = viewerDocument;
+            md_viewables = viewerApp.search({'type': 'geometry'});
+
+            if (md_viewables.length === 0) {
+                console.error('Document contains no viewables.');
+                return;
+            }
+
+            viewer.loadDocumentNode(viewerDocument, md_viewables[0]);
+
+            if (md_viewables.length > 1) {
+                //const viewablesDIV = document.getElementById("viewables_dropdown");
+                //viewablesDIV.style.display = "block";
+            }
+            viewer.addEventListener(Autodesk.Viewing.GEOMETRY_LOADED_EVENT, function () {
+                initLoadbleObjectIds(viewer, objectIds);
+            });
+
+        }
+
+        function initLoadbleObjectIds(viewer, objectIds) {
+            console.log('Document loaded successfully,checking for object IDs...');
+            console.log('Object IDs:', objectIds);
+            // Auto zoom and isolate objects if object IDs are passed 
+            if (objectIds && objectIds.length > 0) {
+                // parse object IDs to list of integers
+                // if contains, parse to list of object IDs
+                if (objectIds.includes(',')) {
+                    console.log('Multiple object IDs found, isolating...');
+                    const objectIdsList = objectIds.split(',').map(id => parseInt(id));
+                    viewer.isolate(objectIdsList); // Isolate the specified objects
+                    viewer.fitToView(objectIdsList); // Zoom into the isolated objects
+                }
+                // if single object ID
+                else {
+                    console.log('Single object ID found, isolating...');
+                    const objectIdsList = [parseInt(objectIds)];
+                    console.log('Object ID:', objectIdsList);
+                    if (!isNaN(objectIdsList[0])) {
+                        viewer.isolate(objectIdsList); // Isolate the specified objects
+                        viewer.fitToView(objectIdsList); // Zoom into the isolated objects
+                    }
+                }
+            }
+        }
+
+        function onDocumentLoadFailure() {
+            console.error('Failed fetching manifest');
+        }
+
+        // Helper function to get object from input or selection
+        function getSelectedOrInputObject() {
+            if (viewer.getSelection().length > 0) {
+                return viewer.getSelection(); // Return selected objects
+            }
+            const inputId = document.getElementById('objectId').value;
+            // if contains, parse to list of object IDs
+            if (inputId.includes(',')) {
+                return inputId.split(',').map(id => parseInt(id));
+            }
+            if (inputId) {
+                const parsedId = parseInt(inputId);
+                if (!isNaN(parsedId)) {
+                    return [parsedId]; // Return array of object ID
+                }
+                console.error('Invalid Object ID input.');
+            }
+            return; // Fallback to current selection
+        }
+
+        // Zoom In function
+        function zoomIn() {
+            const objects = getSelectedOrInputObject();
+            if (objects && objects.length > 0) {
+                viewer.fitToView(objects);
+                // select objects
+                viewer.select(objects);
+                console.log(`Zoomed to objects: ${objects}`);
+            } else {
+                console.log('No object selected or input to zoom in.');
+            }
+        }
+
+        // Zoom Out function
+        function zoomOut() {
+            const objects = getSelectedOrInputObject();
+            if (objects && objects.length > 0) {
+                viewer.navigation.fitBounds(true);
+                viewer.fitToView();
+                console.log(`Zoomed out for objects: ${objects}`);
+            } else {
+                viewer.fitToView();
+                console.log('Zoomed out to the full model.');
+            }
+        }
+
+        // Isolate function
+        function isolateObject() {
+            const objects = getSelectedOrInputObject();
+            if (objects && objects.length > 0) {
+                viewer.isolate(objects); // Isolate specified objects
+                viewer.fitToView(objects); // Zoom into isolated objects
+                console.log(`Isolated objects: ${objects}`);
+            } else {
+                console.log('No object selected or input to isolate.');
+            }
+        }
+
+        // Initialize the viewer on page load
+        window.onload = function () {
+            initializeViewer();
+        };
+    </script>
+</head>
+
+<body bgcolor="#d3d3d3">
+<!-- Control panel -->
+<div id="controls">
+    <input id="objectId" type="text" placeholder="Enter Object ID (optional)">
+    <button onclick="zoomIn()">Zoom</button>
+    <button onclick="zoomOut()">Zoom Out</button>
+    <button onclick="isolateObject()">Isolate</button>
+</div>
+
+<div id="forgeViewer"></div>
+<script lang="JavaScript" src="Extensions/SearchPanel.js"></script>
+</body>
+
+</html>

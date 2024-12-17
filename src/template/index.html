@@ -2,9 +2,10 @@
 <html lang="en">
 
 <head>
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=no"/>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/style.min.css" type="text/css">
+    <link rel="stylesheet" href="https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/style.min.css"
+          type="text/css">
     <script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/viewer3D.min.js"></script>
 
     <style>
@@ -50,9 +51,10 @@
         var md_viewables;
 
         // Replace with actual access token and URN passed dynamically
-        const accessToken = "eyJhbGciOiJSUzI1NiIsImtpZCI6IlhrUFpfSmhoXzlTYzNZS01oRERBZFBWeFowOF9SUzI1NiIsInBpLmF0bSI6ImFzc2MifQ.eyJzY29wZSI6WyJkYXRhOnJlYWQiLCJkYXRhOndyaXRlIiwiZGF0YTpzZWFyY2giLCJkYXRhOmNyZWF0ZSIsImJ1Y2tldDpyZWFkIiwiYnVja2V0OmNyZWF0ZSIsInVzZXI6cmVhZCIsImJ1Y2tldDp1cGRhdGUiLCJidWNrZXQ6ZGVsZXRlIiwiY29kZTphbGwiLCJhY2NvdW50OndyaXRlIiwiYWNjb3VudDpyZWFkIl0sImNsaWVudF9pZCI6IlBVT2tUVXVMa0lHdGxZZUZOYk5HOVcwUFJkbVVqR0trIiwiaXNzIjoiaHR0cHM6Ly9kZXZlbG9wZXIuYXBpLmF1dG9kZXNrLmNvbSIsImF1ZCI6Imh0dHBzOi8vYXV0b2Rlc2suY29tIiwianRpIjoiTkxQU0w3YVRYN2RJQVhUc1Bybm5zUlFJemo3RlFIQlNRTG9UeGZpcWtHZUc2SDNGWHNRalNZNEFSaTJRa2ZxVyIsImV4cCI6MTczNDM5ODMwNn0.a6l70eRiMf5BpqC4PTd-CQKCQshxPfQ_J-wkS_WxEfIHZxjmTKXU1ZCzE0xKTVENda7J_c4nnOt8pK5vr_-JlrzjD9f-s7IXGCW7a7GXQqwnaSJvwctnBttIrA8zDJHSx-c3pdqmVFYVrrLwr3DVy0mzstrkZxEVMiRq8lNrvQtxZV7yYAgnGMkYIvfADkid2gBHOgz86Bv-PoNUEpOtkbACccWKrDcfnuJreSOXa6CHedivpQ7P2c5GYduC9tQ28PVsSsYcfsday3xRj_VLBV2MdJh57o68-sNfrrX-CcZBm71PDzN86TLrISwuGCljjhbfg9ajkUC_SoWCtV-peg";
-        const documentURN = "urn:dXJuOmFkc2sud2lwcHJvZDpmcy5maWxlOnZmLkt6R2R1dDZzUklHZHhoNDlmeWZjQlE_dmVyc2lvbj00";
-        const objectIds = "200";
+        const accessToken = "{{TOKEN}}";
+        const documentURN = "urn:{{URN}}";
+        const objectIds = "{{OBJECT_IDS}}";
+
         function initializeViewer() {
             const options = {
                 env: 'AutodeskProduction2',
@@ -68,11 +70,14 @@
                 viewer = new Autodesk.Viewing.GuiViewer3D(htmlDiv);
                 console.log('Viewer initialized, loading a model next...');
                 const startedCode = viewer.start();
-
                 if (startedCode > 0) {
                     console.error('Failed to create a Viewer: WebGL not supported.');
                     return;
                 }
+                viewer.loadExtension('ToolbarExtension').then(function () {
+                    console.log('ToolbarExtension loaded');
+                });
+                
                 console.log('Initialization complete, loading a model next...');
                 Autodesk.Viewing.Document.load(documentURN, onDocumentLoadSuccess, onDocumentLoadFailure);
             });
@@ -81,7 +86,7 @@
         function onDocumentLoadSuccess(viewerDocument) {
             const viewerApp = viewerDocument.getRoot();
             md_ViewerDocument = viewerDocument;
-            md_viewables = viewerApp.search({ 'type': 'geometry' });
+            md_viewables = viewerApp.search({'type': 'geometry'});
 
             if (md_viewables.length === 0) {
                 console.error('Document contains no viewables.');
@@ -95,15 +100,15 @@
                 //viewablesDIV.style.display = "block";
             }
             viewer.addEventListener(Autodesk.Viewing.GEOMETRY_LOADED_EVENT, function () {
-                initLoadbleObjectIds(viewer,objectIds);
+                initLoadbleObjectIds(viewer, objectIds);
             });
-            
+
         }
-        function initLoadbleObjectIds(viewer,objectIds)
-        {
+
+        function initLoadbleObjectIds(viewer, objectIds) {
             console.log('Document loaded successfully,checking for object IDs...');
             console.log('Object IDs:', objectIds);
-            // Auto zoom and isolate objects if object IDs are passed 
+            // Auto zoom and isolate objects if object IDs are passed
             if (objectIds && objectIds.length > 0) {
                 // parse object IDs to list of integers
                 // if contains, parse to list of object IDs
@@ -118,8 +123,7 @@
                     console.log('Single object ID found, isolating...');
                     const objectIdsList = [parseInt(objectIds)];
                     console.log('Object ID:', objectIdsList);
-                    if (!isNaN(objectIdsList[0]))
-                    {
+                    if (!isNaN(objectIdsList[0])) {
                         viewer.isolate(objectIdsList); // Isolate the specified objects
                         viewer.fitToView(objectIdsList); // Zoom into the isolated objects
                     }
@@ -133,7 +137,7 @@
 
         // Helper function to get object from input or selection
         function getSelectedOrInputObject() {
-            if(viewer.getSelection().length > 0) {
+            if (viewer.getSelection().length > 0) {
                 return viewer.getSelection(); // Return selected objects
             }
             const inputId = document.getElementById('objectId').value;
@@ -148,7 +152,7 @@
                 }
                 console.error('Invalid Object ID input.');
             }
-            return ; // Fallback to current selection
+            return; // Fallback to current selection
         }
 
         // Zoom In function
@@ -197,15 +201,17 @@
 </head>
 
 <body bgcolor="#d3d3d3">
-    <!-- Control panel -->
-    <div id="controls">
-        <input id="objectId" type="text" placeholder="Enter Object ID (optional)">
-        <button onclick="zoomIn()">Zoom</button>
-        <button onclick="zoomOut()">Zoom Out</button>
-        <button onclick="isolateObject()">Isolate</button>
-    </div>
+<!-- Control panel -->
+<div id="controls">
+    <input id="objectId" type="text" placeholder="Enter Object ID (optional)">
+    <button onclick="zoomIn()">Zoom</button>
+    <button onclick="zoomOut()">Zoom Out</button>
+    <button onclick="isolateObject()">Isolate</button>
+</div>
 
-    <div id="forgeViewer"></div>
+<div id="forgeViewer"></div>
+<script lang="JavaScript" src="Extensions/ToolbarExtension.js"></script>
+<script lang="JavaScript" src="Extensions/SearchPanel.js"></script>
 </body>
 
 </html>
