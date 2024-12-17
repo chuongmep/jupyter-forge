@@ -1,15 +1,16 @@
-from aps_toolkit import Auth
+from aps_toolkit import Token
 import random
 import socket
-from subprocess import Popen, PIPE
+import subprocess
 import os
 from IPython.display import display
 from IPython.display import IFrame
-import requests
-import threading
+import time
+import sys
+
 
 class JupyterForge:
-    def __init__(self, urn,token, port=62345, debug_mode=False):
+    def __init__(self, urn, token: Token, port=62345, debug_mode=False):
         self.debug_mode = debug_mode
         self.token = token
         self.urn = urn
@@ -19,7 +20,7 @@ class JupyterForge:
             raise Exception("Token is required")
         self.port = port
         self.dir = self.get_current_dir()
-        self.file_output_name = "viewer_dynamic_rendered.html"
+        self.file_output_name = "rendered.html"
         self.start_a_server(self.dir)
 
     def get_current_dir(self):
@@ -40,6 +41,29 @@ class JupyterForge:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             return s.connect_ex(("localhost", port)) == 0
 
+    @staticmethod
+    def kill_process_using_port(self, port):
+        try:
+            # kill all process have port is using
+            if self.is_port_in_use(port):
+                if self.debug_mode:
+                    print(f"Port {port} is in use, kill it")
+                # check platform and kill process
+                if os.name == 'nt':
+                    all_ids = os.popen(f"netstat -ano | findstr :{port}").read()
+                    pid = int(all_ids.split()[-1])
+                    os.system(f"taskkill /PID {pid} /F")
+                    time.sleep(2)
+                else:
+                    os.system(f"kill -9 $(lsof -t -i:{port})")
+                    time.sleep(2)
+            else:
+                if self.debug_mode:
+                    print(f"Port {port} is not in use")
+
+        except Exception as e:
+            print(f"Error: {e}")
+
     def start_a_server(self, dir):
         try:
             # if port is running, kill it
@@ -51,28 +75,45 @@ class JupyterForge:
                     all_ids = os.popen(f"netstat -ano | findstr :{self.port}").read()
                     pid = int(all_ids.split()[-1])
                     os.system(f"taskkill /PID {pid} /F")
+                    time.sleep(2)
                 else:
                     os.system(f"kill -9 $(lsof -t -i:{self.port})")
             else:
                 if self.debug_mode:
                     print(f"Port {self.port} is not in use, start init server dir: {dir}")
-            # sleep 2s
-            threading.Event().wait(2)
-            # start a server
-            process = Popen(["python", "-m", "http.server", str(self.port)], cwd=dir, stdout=PIPE, stderr=PIPE)
-            stdout, stderr = process.communicate()
-            # Print any errors
-            if stderr:
-                print("Error starting HTTP server:", stderr.decode())
+            # start a server and bind
+            FNULL = open(os.devnull, 'w', encoding='utf-8')
+            if os.name == 'nt':
+                creation_flags = subprocess.CREATE_NEW_PROCESS_GROUP
+                process = subprocess.Popen(
+                    [sys.executable, "-m", "http.server", str(self.port), "--directory", self.dir],
+                    stdout=FNULL,
+                    stderr=FNULL,
+                    creationflags=creation_flags,
+                    shell=False
+                )
+            else:
+                process = subprocess.Popen(
+                    [sys.executable, "-m", "http.server", str(self.port), "--directory", self.dir],
+                    stdout=FNULL,
+                    stderr=FNULL,
+                    shell=False
+                )
+                
+            if self.debug_mode:
+                print(f"Server PID: {process.pid}")
             if self.debug_mode:
                 print(f"Server started successfully. Access: http://localhost:{self.port}")
+            # wait 2 seconds for server to start
+            time.sleep(2)
         except Exception as e:
             print(f"Error starting server: {e}")
 
     def show(self, object_ids: list[int] = None, width: int = 600, height: int = 350):
         access_token = self.token.access_token
         current_dir = os.path.dirname(os.path.realpath(__file__))
-        file_path = os.path.join(current_dir, "template/viewer_dynamic.html")
+        file_path = os.path.join(current_dir, "template", "index.html")
+        print("file_path", file_path)
         with open(file_path, "r") as file:
             html_template = file.read()
         html_content = html_template.replace("{{TOKEN}}", access_token).replace("{{URN}}", self.urn)
@@ -83,6 +124,6 @@ class JupyterForge:
         with open(output_file, "w") as file:
             file.write(html_content)
         if self.debug_mode:
-            print(f"Viewer Access: http://localhost:{self.port}/{self.file_output_name}")
+            print(fr"http://localhost:{self.port}/{self.file_output_name}")
         iframe = IFrame(src=f"http://localhost:{self.port}/{self.file_output_name}", width=width, height=height)
         display(iframe)
