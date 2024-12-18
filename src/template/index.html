@@ -91,7 +91,20 @@
                 viewer.loadExtension('ToolbarExtension').then(function () {
                     console.log('ToolbarExtension loaded');
                 });
-
+                viewer.loadExtension('Autodesk.Measure').then(function () {
+                    console.log('Autodesk.Measure loaded');
+                });
+                //https://aps.autodesk.com/en/docs/viewer/v7/reference/Extensions/PropertiesManagerExtension/
+                // viewer.loadExtension('Autodesk.NPR');
+                // viewer.loadExtension('Autodesk.Viewing.Popout');
+                // viewer.loadExtension('Autodesk.BIM360.Minimap')
+                // viewer.loadExtension('Autodesk.DefaultTools.NavTools')
+                // var ex = viewer.loadExtension('Autodesk.PropertiesManager');
+                // viewer.loadExtension('Autodesk.ViewerSettings')
+                viewer.loadExtension('Autodesk.Viewing.ZoomWindow').then(function () {
+                    console.log('Autodesk.Viewing.ZoomWindow loaded');
+                });
+            
                 console.log('Initialization complete, loading a model next...');
                 Autodesk.Viewing.Document.load(documentURN, onDocumentLoadSuccess, onDocumentLoadFailure);
             });
