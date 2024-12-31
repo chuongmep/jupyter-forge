@@ -2,7 +2,11 @@
 <module type="PYTHON_MODULE" version="4">
   <component name="FacetManager">
     <facet type="Python" name="Python facet">
+<<<<<<< Updated upstream
       <configuration sdkName="jupyter-forge" />
+=======
+      <configuration sdkName="py312" />
+>>>>>>> Stashed changes
     </facet>
   </component>
   <component name="NewModuleRootManager">
@@ -11,6 +15,10 @@
     </content>
     <orderEntry type="jdk" jdkName="Python 3.9 (jupyter-forge)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+<<<<<<< Updated upstream
     <orderEntry type="library" name="jupyter-forge interpreter library" level="application" />
+=======
+    <orderEntry type="library" name="py312 interpreter library" level="application" />
+>>>>>>> Stashed changes
   </component>
 </module>
