@@ -1,7 +1,6 @@
 # Description
 
-Jupyter Forge is a library that allows you can explore 3d viewer from Autodesk Platform Services bring into interactive
-of Jupyter Notebook.
+Jupyter Forge is a powerful library that seamlessly integrates Autodesk Platform Services with Jupyter Notebooks, enabling interactive 3D viewing and exploration within your notebook environment.
 
 ![](./docs/quick-demo.gif)
 
@@ -10,7 +9,10 @@ of Jupyter Notebook.
 - [x] Show 3d viewer from Autodesk Platform Services
 - [x] Show 3d viewer from Autodesk Platform Services with object id
 - [x] Show 3d viewer from Autodesk Platform Services with object id and ajust width and height
-- [x] Zoom In, Zoom Out, Pan, Isolate, 
+- [x] Zoom In, Zoom Out, Pan, Isolate,
+- [x] Clustering Viewer
+
+![](./docs/cluster.gif)
 
 
 ## Installation
