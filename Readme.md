@@ -1,3 +1,11 @@
+
+![PyPI](https://img.shields.io/pypi/v/aps-toolkit?label=pypi%20jupyter-forge)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/jupyter-forge?label=pipy-download)
+
+<a href="https://twitter.com/intent/follow?screen_name=chuongmep">
+<img src="https://img.shields.io/twitter/follow/chuongmep?style=social&logo=twitter"
+alt="follow on Twitter"></a>
+
 # 🍫Description
 
 Jupyter Forge is a powerful library that seamlessly integrates Autodesk Platform Services with Jupyter Notebooks, enabling interactive 3D viewing and exploration within your notebook environment.
@@ -13,6 +21,10 @@ Jupyter Forge is a powerful library that seamlessly integrates Autodesk Platform
 - [x] Clustering Viewer
 
 ![](./docs/cluster.gif)
+
+- [x] Search Object by Name
+
+![](./docs/search.gif)
 
 
 ## 🦞Installation
