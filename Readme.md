@@ -1,5 +1,5 @@
 
-![PyPI](https://img.shields.io/pypi/v/aps-toolkit?label=pypi%20jupyter-forge)
+![PyPI](https://img.shields.io/pypi/v/jupyter-forge?label=pypi%20jupyter-forge)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/jupyter-forge?label=pipy-download)
 
 <a href="https://twitter.com/intent/follow?screen_name=chuongmep">
@@ -15,8 +15,8 @@ Jupyter Forge is a powerful library that seamlessly integrates Autodesk Platform
 # ⚡Features
 
 - [x] Show 3d viewer from Autodesk Platform Services
-- [x] Show 3d viewer from Autodesk Platform Services with object id
-- [x] Show 3d viewer from Autodesk Platform Services with object id and ajust width and height
+- [x] Show 3d viewer from Autodesk Platform Services with object ids
+- [x] Show 3d viewer from Autodesk Platform Services with object ids and ajust width and height
 - [x] Zoom In, Zoom Out, Pan, Isolate,
 - [x] Clustering Viewer
 
@@ -56,9 +56,12 @@ from aps_toolkit import Auth
 urn = "dXJuOmFkc2sud2lwcHJvZDpmcy5maWxlOnZmLlFsa1ZtVU5RUmYtanMtd3dLQ2dLM1E_dmVyc2lvbj0x"
 token = Auth().auth2leg()
 forge_viewer = JupyterForge(urn, token)
+
+## CASE 1 : NONE OBJECTS IDS ISOLATE VIEWER
+forge_viewer.show(width=800, height=600)
+## CASE 2 : OBJECTS IDS ISOLATE VIEWER
 # object id from derivative api
 object_ids = [123, 456]
-# show 3d viewer
 forge_viewer.show(object_ids, width=800, height=600)
 ```
 
