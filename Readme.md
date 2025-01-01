@@ -18,7 +18,7 @@ Jupyter Forge is a powerful library that seamlessly integrates Autodesk Platform
 ## Installation
 
 ```bash
-pip install jupyter-forge
+pip install jupyter-forge --upgrade
 ```
 
 ## Usage
