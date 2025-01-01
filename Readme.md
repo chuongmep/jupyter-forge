@@ -6,13 +6,13 @@
 <img src="https://img.shields.io/twitter/follow/chuongmep?style=social&logo=twitter"
 alt="follow on Twitter"></a>
 
-# 🍫Description
+## 🍫Description
 
 Jupyter Forge is a powerful library that seamlessly integrates [Autodesk Platform Services](https://aps.autodesk.com/) with [Jupyter Notebooks](https://jupyter.org/), enabling interactive 3D viewing and exploration within your notebook environment.
 
 ![](./docs/quick-demo.gif)
 
-# ⚡Features
+## ⚡Features
 
 - [x] Show 3d viewer from [Autodesk Platform Services](https://aps.autodesk.com/)
 - [x] Show 3d viewer from [Autodesk Platform Services](https://aps.autodesk.com/) with object ids
