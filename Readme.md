@@ -21,6 +21,20 @@ Jupyter Forge is a powerful library that seamlessly integrates Autodesk Platform
 pip install jupyter-forge --upgrade
 ```
 
+## Requirements
+
+- Python 3.9+
+
+- Setting Environment Variables, see
+  Tutorial [Create an App](https://aps.autodesk.com/en/docs/oauth/v2/tutorials/create-app/)
+
+Set Environment Variables
+
+```bash
+APS_CLIENT_ID=your_client_id
+APS_CLIENT_SECRET=your_client_secret
+```
+
 ## Usage
 
 ```python
@@ -35,6 +49,16 @@ object_ids = [123, 456]
 # show 3d viewer
 forge_viewer.show(object_ids, width=800, height=600)
 ```
+
+## License
+
+This project is licensed under the Apache License - see the [LICENSE](./License.md) file for details.
+
+## Contributing
+
+This is project just research in my free time and don't have any power to keep it up to date. If you want to contribute,
+please feel free to fork and submit a pull request.
+
 
 ## Developers
 
