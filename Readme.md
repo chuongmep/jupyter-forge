@@ -1,10 +1,10 @@
-# Description
+# 🍫Description
 
 Jupyter Forge is a powerful library that seamlessly integrates Autodesk Platform Services with Jupyter Notebooks, enabling interactive 3D viewing and exploration within your notebook environment.
 
 ![](./docs/quick-demo.gif)
 
-# Features
+# ⚡Features
 
 - [x] Show 3d viewer from Autodesk Platform Services
 - [x] Show 3d viewer from Autodesk Platform Services with object id
@@ -15,13 +15,13 @@ Jupyter Forge is a powerful library that seamlessly integrates Autodesk Platform
 ![](./docs/cluster.gif)
 
 
-## Installation
+## 🦞Installation
 
 ```bash
 pip install jupyter-forge --upgrade
 ```
 
-## Requirements
+## 🙋🏻‍♂️Requirements
 
 - Python 3.9+
 
@@ -35,7 +35,7 @@ APS_CLIENT_ID=your_client_id
 APS_CLIENT_SECRET=your_client_secret
 ```
 
-## Usage
+## 🍽️Usage
 
 ```python
 from jupyter_forge import JupyterForge
@@ -50,15 +50,20 @@ object_ids = [123, 456]
 forge_viewer.show(object_ids, width=800, height=600)
 ```
 
-## License
+## ©️License
 
 This project is licensed under the Apache License - see the [LICENSE](./License.md) file for details.
 
-## Contributing
+## 💥Contributing
 
 This is project just research in my free time and don't have any power to keep it up to date. If you want to contribute,
 please feel free to fork and submit a pull request.
 
+## 🎁 Sponsors
+
+![](https://upload.wikimedia.org/wikipedia/en/thumb/0/08/JetBrains_beam_logo.svg/220px-JetBrains_beam_logo.svg.png)
+
+Thanks [JetBrains](https://www.jetbrains.com/) for providing a free All product IDE for this project.
 
 ## Developers
 
