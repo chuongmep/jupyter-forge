@@ -1,4 +1,4 @@
-
+![Platform](https://img.shields.io/badge/platform-Windows/MacOS/Linux-lightgray.svg) [![License: Apache](https://img.shields.io/badge/License-Apache-yellow.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 ![PyPI](https://img.shields.io/pypi/v/jupyter-forge?label=pypi%20jupyter-forge)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/jupyter-forge?label=pipy-download)
 
