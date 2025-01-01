@@ -8,15 +8,15 @@ alt="follow on Twitter"></a>
 
 # 🍫Description
 
-Jupyter Forge is a powerful library that seamlessly integrates Autodesk Platform Services with Jupyter Notebooks, enabling interactive 3D viewing and exploration within your notebook environment.
+Jupyter Forge is a powerful library that seamlessly integrates [Autodesk Platform Services](https://aps.autodesk.com/) with [Jupyter Notebooks](https://jupyter.org/), enabling interactive 3D viewing and exploration within your notebook environment.
 
 ![](./docs/quick-demo.gif)
 
 # ⚡Features
 
-- [x] Show 3d viewer from Autodesk Platform Services
-- [x] Show 3d viewer from Autodesk Platform Services with object ids
-- [x] Show 3d viewer from Autodesk Platform Services with object ids and ajust width and height
+- [x] Show 3d viewer from [Autodesk Platform Services](https://aps.autodesk.com/)
+- [x] Show 3d viewer from [Autodesk Platform Services](https://aps.autodesk.com/) with object ids
+- [x] Show 3d viewer from [Autodesk Platform Services](https://aps.autodesk.com/) with object ids and ajust width and height
 - [x] Zoom In, Zoom Out, Pan, Isolate,
 - [x] Clustering Viewer
 
@@ -79,6 +79,40 @@ please feel free to fork and submit a pull request.
 ![](https://upload.wikimedia.org/wikipedia/en/thumb/0/08/JetBrains_beam_logo.svg/220px-JetBrains_beam_logo.svg.png)
 
 Thanks [JetBrains](https://www.jetbrains.com/) for providing a free All product IDE for this project.
+
+## Q&A
+
+<details><summary>How can I get URN input?</summary>
+
+1. You can use `aps-toolkit` library to get URN of the item latest version.
+
+```python
+from aps_toolkit import *
+
+token = Auth().auth2leg()
+bim360 = BIM360(token)
+urn = bim360.get_latest_derivative_urn("<project_id>", "<folder_id>")
+```
+
+2. You can batch report urn to dataframe from BIM360 class in `aps-toolkit` library.
+
+```python
+from aps_toolkit import BIM360
+from aps_toolkit import Auth
+
+token = Auth().auth3leg()
+bim360 = BIM360(token)
+df = bim360.batch_report_items("<project_id>", "<folder_id>", ['.rvt'], is_sub_folder=False)
+```
+
+</details>
+
+## Knowledge
+
+- [Autodesk Platform Services](https://aps.autodesk.com/)
+- [Jupyter Notebook](https://jupyter.org/)
+- [Understand About Derivative Urn APS](https://chuongmep.com/posts/2023-12-28-Derivative-Urn-Forge.html#but-wrong-urn)
+- [Easy To Snoop Info Item From ACC](https://chuongmep.com/posts/2024-04-02-APS-ACC-URN.html#how-to-get-urn-from-acc)
 
 ## Developers
 
